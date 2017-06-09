@@ -7,8 +7,8 @@ public class Spaces : MonoBehaviour {
     public string name; //Name of Space
     public string type; //Type of Space (Center, Corner, Cross)
     public int BoardPosition; //Position of space in relation to board, position numbers are 1-9
-    private bool isTaken; //Is position already occupied?
-    private bool isAvailable; //Is position available to select?
+    private bool isTaken { get; set; } //Is position already occupied?
+    private bool isAvailable { get; set; } //Is position available to select?
 
 	// Use this for initialization
 	void Start () {
