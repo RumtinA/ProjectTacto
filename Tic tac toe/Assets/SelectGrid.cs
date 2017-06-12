@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SelectGrid : MonoBehaviour {
-    public int selected; //Checks for selection of space via click.
-
+    public bool selected; //Checks for selection of space via click.
     
 
 	// Use this for initialization
@@ -21,9 +20,17 @@ public class SelectGrid : MonoBehaviour {
 
             if (hit)
             {
-                if (!GameObject(Space).GetComponent<Spaces>().isTaken){
+                if (!GameObject(Zone).GetComponent<Spaces>().isTaken){
 
-                        GameObject RedMarker = (GameObject)Instantiate(RedMarker, )
+                    if (selected)
+                    {
+                        void Spawn()
+                        { GameObject RedMarker = (GameObject)Instantiate(RedMarker, transform.position, transform.rotation);
+                            
+                        }
+                        }
+                        
+                    else { }
 
                 }
 
