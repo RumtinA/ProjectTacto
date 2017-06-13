@@ -18,21 +18,8 @@ public class SelectGrid : MonoBehaviour {
             RaycastHit2D hitInfo = new RaycastHit2D();
             bool hit = Physics2D.Raycast(new Vector2(GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition).x, GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition).y), Vector2.zero, 0f);
 
-            if (hit)
-            {
-                if (!GameObject(Zone).GetComponent<Spaces>().isTaken){
-
-                    if (selected)
-                    {
-                        void Spawn()
-                        { GameObject RedMarker = (GameObject)Instantiate(RedMarker, transform.position, transform.rotation);
-                            
-                        }
-                        }
-                        
-                    else { }
-
-                }
+            
+                
 
             }
 
@@ -42,4 +29,4 @@ public class SelectGrid : MonoBehaviour {
             }
         }
 	}
-}
+
