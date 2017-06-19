@@ -15,6 +15,8 @@ public class Drag : MonoBehaviour {
 	private Collider2D colliding;
 	private bool rotated;
 	private Cards thisCard;
+	private Vector3 startPosition; // The starting position of the card
+	private Vector3 startOffScreen;
 
 	void Start()
 	{
@@ -26,6 +28,11 @@ public class Drag : MonoBehaviour {
 		singleClick = false;
 		rotated = false;
 		thisCard = gameObject.GetComponent<Cards> ();
+		startOffScreen = gameObject.transform.position;
+		startPosition = gameObject.transform.position;
+		startPosition.x = gameObject.transform.position.x - 245.0f;
+		Debug.Log (startPosition);
+		StartCoroutine (MoveOverSeconds (gameObject, startPosition, 1.0f));
 	}
 
 	void OnMouseDown()
@@ -63,6 +70,7 @@ public class Drag : MonoBehaviour {
 	{
 		isSelected = false; // No longer selected
 		animator.SetBool ("isSelected", false); // Tells animator that the item is no longer selected
+		// colliding.GetComponent<ProgramMat>().chooseOrRemoveCard(false, null);
 		if (isDragging == true) // If it was being dragged
 		{
 			isDragging = false; // It's no longer being dragged
@@ -74,13 +82,15 @@ public class Drag : MonoBehaviour {
 				singleClick = false;
 				animator.SetBool("singleClick", false);
 			}
-		if (col.IsTouching(colliding))
-		{
+		if (col.IsTouching (colliding) && colliding.CompareTag ("Program") && thisCard.GetColor () == colliding.GetComponent<ProgramMat> ().GetColor ()) {
 			Debug.Log ("Collision Success!");
 			transform.position = colliding.gameObject.transform.position;
 			transform.Rotate (Vector3.forward * -90);
 			rotated = true;
 			thisCard.SetIsStored (true);
+			colliding.GetComponent<ProgramMat> ().chooseOrRemoveCard (true, gameObject);
+		} else {
+			gameObject.transform.position = GetStartPosition();
 		}
 		Cursor.visible = true;
 	}
@@ -106,5 +116,56 @@ public class Drag : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		
+	}
+
+	public IEnumerator MoveOverSpeed (Vector3 end, float speed)
+	{
+		// speed is 1 unit per second
+		while (gameObject.transform.position != end) 
+		{
+			gameObject.transform.position = Vector3.MoveTowards (gameObject.transform.position, end, speed * Time.deltaTime);
+			yield return new WaitForEndOfFrame ();
+		}
+	}
+
+	public IEnumerator MoveOverSeconds (Vector3 end, float seconds)
+	{
+		float elapsedTime = 0;
+		Vector3 startingPos = gameObject.transform.position;
+		while (elapsedTime < seconds) {
+			gameObject.transform.position = Vector3.Lerp (startingPos, end, (elapsedTime / seconds));
+			elapsedTime += Time.deltaTime;
+			yield return new WaitForEndOfFrame ();
+		}
+		this.gameObject.transform.position = end;
+
+	}
+
+	public IEnumerator MoveOverSpeed (GameObject objectToMove, Vector3 end, float speed)
+	{
+		// speed is 1 unit per second
+		while (objectToMove.transform.position != end) 
+		{
+			objectToMove.transform.position = Vector3.MoveTowards (objectToMove.transform.position, end, speed * Time.deltaTime);
+			yield return new WaitForEndOfFrame ();
+		}
+	}
+
+	public IEnumerator MoveOverSeconds (GameObject objectToMove, Vector3 end, float seconds)
+	{
+		float elapsedTime = 0;
+		Vector3 startingPos = objectToMove.transform.position;
+		while (elapsedTime < seconds) {
+			objectToMove.transform.position = Vector3.Lerp (startingPos, end, (elapsedTime / seconds));
+			elapsedTime += Time.deltaTime;
+			yield return new WaitForEndOfFrame ();
+		}
+		objectToMove.transform.position = end;
+	}
+
+
+	public Vector3 GetStartPosition()
+	{
+		return startPosition;
 	}
 }
