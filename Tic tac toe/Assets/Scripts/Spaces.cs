@@ -33,8 +33,8 @@ public class Spaces : MonoBehaviour {
 
 	public void SetIsTaken(bool b)
 	{
+		Debug.Log ("Setting");
 		isTaken = b;
-		SetIsAvailable (false);
 		if (isTaken == true && manager.GetComponent<GameManagerPlay>().GetIsPlayerTurn()) 
 		{
 			whoHasIt = PlayerPrefs.GetInt ("Player Color");
@@ -42,10 +42,12 @@ public class Spaces : MonoBehaviour {
 			if (PlayerPrefs.GetInt ("Player Color") == 0) 
 			{
 				animator.SetBool ("isTakenRed", true);
+				SetIsAvailable (false);
 			} 
 			else 
 			{
 				animator.SetBool ("isTakenBlue", true);
+				SetIsAvailable (false);
 			}
 		} 
 		else
@@ -54,10 +56,12 @@ public class Spaces : MonoBehaviour {
 			if (PlayerPrefs.GetInt ("Opponent Color") == 0) 
 			{
 				animator.SetBool ("isTakenRed", true);
+				SetIsAvailable (false);
 			}
 			else
 			{
-			animator.SetBool ("isTakenBlue", true);
+				animator.SetBool ("isTakenBlue", true);
+				SetIsAvailable (false);
 			}
 
 		}
@@ -84,8 +88,9 @@ public class Spaces : MonoBehaviour {
 	{
 		if (animator.GetBool("isAvailable")) 
 		{
-			Debug.Log ("You pressed it!");
+		//	Debug.Log ("You pressed it!");
 			SetIsTaken (true);
+			//manager.GetComponent<GameManagerPlay> ().SetDuringSuddenDeath (false);
 			manager.GetComponent<GameManagerPlay> ().turnDone ();
 		}
 	}

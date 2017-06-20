@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor.SceneManagement;
 
 public class GameManager : MonoBehaviour {
 
@@ -22,6 +23,7 @@ public class GameManager : MonoBehaviour {
 	private GameObject square1;
 	private GameObject square2;
 	private GameObject square3;
+	public GameObject button;
 	public GameObject background;
 	private bool lockInVisible;
 	private bool lockedIn;
@@ -35,8 +37,8 @@ public class GameManager : MonoBehaviour {
 	{
 		lockInVisible = false;
 		lockedIn = false;
-		SetPlayerColor (1);  // Default sets player to red
-		SetEnemyColor (0); // Default sets enemy to blue
+		SetPlayerColor (0);  // Default sets player to red
+		SetEnemyColor (1); // Default sets enemy to blue
 		if (GetPlayerColor () == 0) 		
 		{
 			background.transform.rotation = new Quaternion (0.0f, 0.0f, 180.0f, 0.0f);
@@ -66,14 +68,24 @@ public class GameManager : MonoBehaviour {
 		if (square1.GetComponent<ProgramMat> ().GetIsTaken () && square2.GetComponent<ProgramMat> ().GetIsTaken () && square3.GetComponent<ProgramMat> ().GetIsTaken () && lockInVisible == false) 
 		{
 			lockInVisible = true;
-		
+			PlayerPrefs.SetString ("Player Top", square1.GetComponent<ProgramMat>().GetNameOfOccupiedCard());
+			Debug.Log (square1.GetComponent<ProgramMat> ().GetNameOfOccupiedCard ());
+			PlayerPrefs.SetString ("Player Mid", square2.GetComponent<ProgramMat>().GetNameOfOccupiedCard());
+			PlayerPrefs.SetString ("Player Low", square3.GetComponent<ProgramMat>().GetNameOfOccupiedCard());
+			Instantiate (button, new Vector3 (0, 0, 108), Quaternion.identity);
+			Debug.Log ("Will it Blend?");
+		}
+		if (lockInVisible == true) 
+		{
+			if (!square1.GetComponent<ProgramMat> ().GetIsTaken () || !square2.GetComponent<ProgramMat> ().GetIsTaken () || !square3.GetComponent<ProgramMat> ().GetIsTaken ()) 
+			{
+				lockInVisible = false;
+				Debug.Log ("That is the Question!");
+				DestroyImmediate (button, true);
+			}
 		}
 	}
-
-	void SetCards()
-	{
 		
-	}
 
 	void DealCardsToPlayer ()
 	{

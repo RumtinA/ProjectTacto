@@ -6,6 +6,7 @@ public class MirrorStraight : Attribute {
 
 	public void ActivateCode()
 	{
+		// Prepares the code
 		GameObject[] boardSpaces = GetComponentInParent<Attribute> ().GetBoardSpaces ();
 		bool[] availability = new bool[9];
 		for (int x = 0; x > 9; x++) 
@@ -13,7 +14,7 @@ public class MirrorStraight : Attribute {
 			availability [x] = false;
 		}
 
-
+		// Unique Code
 		if (boardSpaces [0].GetComponent<Spaces> ().GetIsTaken() == false && boardSpaces[2].GetComponent<Spaces>().GetIsTaken() == true && boardSpaces[2].GetComponent<Spaces>().GetWhoHasIt() != GetActivePlayer())
 		{
 			availability [0] = true;
@@ -63,6 +64,7 @@ public class MirrorStraight : Attribute {
 			availability [8] = true;
 		}
 
+		// Sends out the result
 		GetComponentInParent<Attribute> ().SetResult (availability);
 
 	}

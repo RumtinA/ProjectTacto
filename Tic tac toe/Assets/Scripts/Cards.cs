@@ -38,6 +38,9 @@ public class Cards : MonoBehaviour {
 		return color;
 	}
 
-
+	public string GetNameOfCard()
+	{
+		return nameOfCard;
+	}
 
 }

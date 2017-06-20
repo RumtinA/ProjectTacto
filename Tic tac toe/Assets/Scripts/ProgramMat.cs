@@ -7,12 +7,12 @@ public class ProgramMat : MonoBehaviour {
 	public int color;
 	public string matName;
 	private bool isTaken;
-	private GameObject occupiedCard;
+	private string nameOfOccupiedCard;
 
 	// Use this for initialization
 	void Start () {
 		isTaken = false;
-		occupiedCard = null;
+		nameOfOccupiedCard = "none";
 	}
 	
 	// Update is called once per frame
@@ -30,14 +30,15 @@ public class ProgramMat : MonoBehaviour {
 		SetIsTaken (b);
 	}
 
-	private void SetIsTaken(bool b)
+	public void SetIsTaken(bool b)
 	{
 		isTaken = b;
 	}
 
-	private void SetOccupiedCard(GameObject col)
+	public void SetOccupiedCard(string n)
 	{
-		occupiedCard = col;
+		nameOfOccupiedCard = n;
+		Debug.Log (nameOfOccupiedCard);
 	}
 
 	public bool GetIsTaken()
@@ -45,8 +46,8 @@ public class ProgramMat : MonoBehaviour {
 		return isTaken;
 	}
 
-	public GameObject GetOccupiedCard()
+	public string GetNameOfOccupiedCard()
 	{
-		return occupiedCard;
+		return nameOfOccupiedCard;
 	}
 }

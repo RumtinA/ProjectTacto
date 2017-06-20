@@ -12,11 +12,14 @@ public class Drag : MonoBehaviour {
 	private bool isSelected;
 	private bool isDragging;
 	private bool singleClick;
+	private bool isStored;
+	private string storedIn;
 	private Collider2D colliding;
 	private bool rotated;
 	private Cards thisCard;
 	private Vector3 startPosition; // The starting position of the card
 	private Vector3 startOffScreen;
+	private GameObject storedMat;
 
 	void Start()
 	{
@@ -31,8 +34,9 @@ public class Drag : MonoBehaviour {
 		startOffScreen = gameObject.transform.position;
 		startPosition = gameObject.transform.position;
 		startPosition.x = gameObject.transform.position.x - 245.0f;
-		Debug.Log (startPosition);
+	//	Debug.Log (startPosition);
 		StartCoroutine (MoveOverSeconds (gameObject, startPosition, 1.0f));
+		storedIn = "none";
 	}
 
 	void OnMouseDown()
@@ -49,7 +53,7 @@ public class Drag : MonoBehaviour {
 			animator.SetBool("singleClick", false); // Tells the animator that it is no longer a single click
 		}
 
-		Debug.Log ("You have clicked on it!");
+	//	Debug.Log ("You have clicked on it!");
 		if (rotated == true) 
 		{
 			transform.Rotate (Vector3.forward * 90);
@@ -69,36 +73,44 @@ public class Drag : MonoBehaviour {
 	void OnMouseUp()
 	{
 		isSelected = false; // No longer selected
+		Cursor.visible = true;
 		animator.SetBool ("isSelected", false); // Tells animator that the item is no longer selected
 		// colliding.GetComponent<ProgramMat>().chooseOrRemoveCard(false, null);
-		if (isDragging == true) // If it was being dragged
-		{
+		if (isDragging == true) { // If it was being dragged
 			isDragging = false; // It's no longer being dragged
-			animator.SetBool("isDragging", false);
+			animator.SetBool ("isDragging", false);
 		}
 		AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo (0);
-		if (stateInfo.IsName("Currently Dragging"))
-			{
-				singleClick = false;
-				animator.SetBool("singleClick", false);
-			}
+		if (stateInfo.IsName ("Currently Dragging")) {
+			singleClick = false;
+			animator.SetBool ("singleClick", false);
+		}
 		if (col.IsTouching (colliding) && colliding.CompareTag ("Program") && thisCard.GetColor () == colliding.GetComponent<ProgramMat> ().GetColor ()) {
-			Debug.Log ("Collision Success!");
+			//	Debug.Log ("Collision Success!");
 			transform.position = colliding.gameObject.transform.position;
 			transform.Rotate (Vector3.forward * -90);
 			rotated = true;
 			thisCard.SetIsStored (true);
 			colliding.GetComponent<ProgramMat> ().chooseOrRemoveCard (true, gameObject);
+			colliding.GetComponent<ProgramMat> ().SetOccupiedCard (gameObject.GetComponent<Cards> ().GetNameOfCard ());
+			isStored = true;
+			storedIn = colliding.gameObject.GetComponent<ProgramMat> ().matName;
+			storedMat = colliding.gameObject;
 		} else {
-			gameObject.transform.position = GetStartPosition();
+			gameObject.transform.position = GetStartPosition ();
+			isStored = false;
+			if (storedIn != "none") {
+				storedMat.GetComponent<ProgramMat> ().SetIsTaken (false);
+				storedIn = "none";
+			}
+			Cursor.visible = true;
 		}
-		Cursor.visible = true;
 	}
 		
 
 	void OnMouseDrag()
 	{
-		Debug.Log ("You're dragging!");
+	//	Debug.Log ("You're dragging!");
 		isDragging = true;  // Becomes true because you're dragging
 		animator.SetBool("isDragging", true);
 		Vector3 curScreenPoint = new Vector3 (Input.mousePosition.x, Input.mousePosition.y, Input.mousePosition.z);
@@ -110,7 +122,7 @@ public class Drag : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D other)
 	{
 		colliding = other;
-		Debug.Log ("It has collided");
+//		Debug.Log ("It has collided");
 	}
 
 	// Update is called once per frame

@@ -2,15 +2,65 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BlockRowCenter : MonoBehaviour {
+public class BlockRowCenter : Attribute {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+	public void ActivateCode()
+	{
+		// Prepares the code
+		GameObject[] boardSpaces = GetComponentInParent<Attribute> ().GetBoardSpaces ();
+		bool[] availability = new bool[9];
+		for (int x = 0; x > 9; x++) 
+		{
+			availability [x] = false;
+		}
+
+		// Unique Code
+		if (boardSpaces [0].GetComponent<Spaces> ().GetIsTaken () && boardSpaces [0].GetComponent<Spaces> ().GetWhoHasIt () != GetActivePlayer ()) // If space 0 is taken and not by the active player
+		{
+			if (boardSpaces [2].GetComponent<Spaces> ().GetIsTaken () && boardSpaces [2].GetComponent<Spaces> ().GetWhoHasIt () != GetActivePlayer ()) // If space 2 is taken and not by the active player
+			{
+				availability [1] = true;
+			}
+		}
+		if (boardSpaces [3].GetComponent<Spaces> ().GetIsTaken () && boardSpaces [3].GetComponent<Spaces> ().GetWhoHasIt () != GetActivePlayer ()) // If space 3 is taken and not by the active player
+		{
+			if (boardSpaces [5].GetComponent<Spaces> ().GetIsTaken () && boardSpaces [5].GetComponent<Spaces> ().GetWhoHasIt () != GetActivePlayer ()) // If space 5 is taken and not by the active player
+			{
+				availability [4] = true;
+			}
+		}
+		if (boardSpaces [6].GetComponent<Spaces> ().GetIsTaken () && boardSpaces [6].GetComponent<Spaces> ().GetWhoHasIt () != GetActivePlayer ()) // If space 6 is taken and not by the active player
+		{
+			if (boardSpaces [8].GetComponent<Spaces> ().GetIsTaken () && boardSpaces [8].GetComponent<Spaces> ().GetWhoHasIt () != GetActivePlayer ()) // If space 8 is taken and not by the active player
+			{
+				availability [7] = true;
+			}
+		}
+		if (boardSpaces [0].GetComponent<Spaces> ().GetIsTaken () && boardSpaces [0].GetComponent<Spaces> ().GetWhoHasIt () != GetActivePlayer ()) // If space 0 is taken and not by the active player
+		{
+			if (boardSpaces [6].GetComponent<Spaces> ().GetIsTaken () && boardSpaces [6].GetComponent<Spaces> ().GetWhoHasIt () != GetActivePlayer ()) // If space 6 is taken and not by the active player
+			{
+				availability [3] = true;
+			}
+		}
+		if (boardSpaces [1].GetComponent<Spaces> ().GetIsTaken () && boardSpaces [1].GetComponent<Spaces> ().GetWhoHasIt () != GetActivePlayer ()) // If space 1 is taken and not by the active player
+		{
+			if (boardSpaces [7].GetComponent<Spaces> ().GetIsTaken () && boardSpaces [7].GetComponent<Spaces> ().GetWhoHasIt () != GetActivePlayer ()) // If space 7 is taken and not by the active player
+			{
+				availability [4] = true;
+			}
+		}
+		if (boardSpaces [2].GetComponent<Spaces> ().GetIsTaken () && boardSpaces [2].GetComponent<Spaces> ().GetWhoHasIt () != GetActivePlayer ()) // If space 2 is taken and not by the active player
+		{
+			if (boardSpaces [8].GetComponent<Spaces> ().GetIsTaken () && boardSpaces [8].GetComponent<Spaces> ().GetWhoHasIt () != GetActivePlayer ()) // If space 8 is taken and not by the active player
+			{
+				availability [5] = true;
+			}
+		}
+
+
+		// Sends out the result
+		GetComponentInParent<Attribute> ().SetResult (availability);
+
 	}
 }
