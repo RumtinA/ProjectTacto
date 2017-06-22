@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor.SceneManagement;
 
 public class GameManager : MonoBehaviour {
 
@@ -15,11 +14,7 @@ public class GameManager : MonoBehaviour {
 	public GameObject[] prefabulousRed;
 	public GameObject[] prefabulousBlue;
 	public GameObject[] squares;
-	private GameObject card1;
-	private GameObject card2;
-	private GameObject card3;
-	private GameObject card4;
-	private GameObject card5;
+
 	private GameObject square1;
 	private GameObject square2;
 	private GameObject square3;
@@ -27,6 +22,7 @@ public class GameManager : MonoBehaviour {
 	public GameObject background;
 	private bool lockInVisible;
 	private bool lockedIn;
+	private GameObject theButton;
 
 	// Use this for initialization
 	public GameManager (int p, int e) {
@@ -37,8 +33,8 @@ public class GameManager : MonoBehaviour {
 	{
 		lockInVisible = false;
 		lockedIn = false;
-		SetPlayerColor (0);  // Default sets player to red
-		SetEnemyColor (1); // Default sets enemy to blue
+		SetPlayerColor (1);  // Default sets player to red
+		SetEnemyColor (0); // Default sets enemy to blue
 		if (GetPlayerColor () == 0) 		
 		{
 			background.transform.rotation = new Quaternion (0.0f, 0.0f, 180.0f, 0.0f);
@@ -72,7 +68,7 @@ public class GameManager : MonoBehaviour {
 			Debug.Log (square1.GetComponent<ProgramMat> ().GetNameOfOccupiedCard ());
 			PlayerPrefs.SetString ("Player Mid", square2.GetComponent<ProgramMat>().GetNameOfOccupiedCard());
 			PlayerPrefs.SetString ("Player Low", square3.GetComponent<ProgramMat>().GetNameOfOccupiedCard());
-			Instantiate (button, new Vector3 (0, 0, 108), Quaternion.identity);
+			theButton = (Instantiate (button, new Vector3 (0, 0, 108), Quaternion.identity)) as GameObject;
 			Debug.Log ("Will it Blend?");
 		}
 		if (lockInVisible == true) 
@@ -81,7 +77,7 @@ public class GameManager : MonoBehaviour {
 			{
 				lockInVisible = false;
 				Debug.Log ("That is the Question!");
-				DestroyImmediate (button, true);
+				DestroyObject (theButton);
 			}
 		}
 	}
@@ -130,11 +126,11 @@ public class GameManager : MonoBehaviour {
 
 	void Spawn (GameObject[] prefabulous, int n1, int n2, int n3, int n4, int n5)
 	{
-		card1 = Instantiate (prefabulous[n1], new Vector3(175f, -50.0f, 108f), Quaternion.identity) as GameObject;
-		card2 = Instantiate (prefabulous[n2], new Vector3(210f, -50.0f, 108f), Quaternion.identity) as GameObject;
-		card3 = Instantiate (prefabulous[n3], new Vector3(245f, -50.0f, 108f), Quaternion.identity) as GameObject;
-		card4 = Instantiate (prefabulous[n4], new Vector3(280f, -50.0f, 108f), Quaternion.identity) as GameObject;
-		card5 = Instantiate (prefabulous[n5], new Vector3(315f, -50.0f, 108f), Quaternion.identity) as GameObject;
+		Instantiate (prefabulous[n1], new Vector3(175f, -50.0f, 108f), Quaternion.identity);
+		Instantiate (prefabulous[n2], new Vector3(210f, -50.0f, 108f), Quaternion.identity);
+		Instantiate (prefabulous[n3], new Vector3(245f, -50.0f, 108f), Quaternion.identity);
+		Instantiate (prefabulous[n4], new Vector3(280f, -50.0f, 108f), Quaternion.identity);
+		Instantiate (prefabulous[n5], new Vector3(315f, -50.0f, 108f), Quaternion.identity);
 	}
 		
 

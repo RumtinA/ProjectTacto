@@ -13,6 +13,6 @@ public class LockIn : MonoBehaviour {
 
 	void OnMouseUp()
 	{
-		manager.GetComponent<SceneManager>().GameTime ();
+		manager.GetComponent<SceneManage>().GameTime ();
 	}
 }

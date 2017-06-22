@@ -24,6 +24,10 @@ public class GameManagerPlay : MonoBehaviour {
 	private bool duringSuddenDeath;
 	private float currentResolutionWidth;
 	private float currentResolutionHeight;
+	public GameObject redStartButton;
+	public GameObject blueStartButton;
+	private GameObject redButtonController;
+	private GameObject blueButtonController;
 
 
 	// Use this for initialization
@@ -31,8 +35,8 @@ public class GameManagerPlay : MonoBehaviour {
 		currentResolutionWidth = Screen.width;
 		currentResolutionWidth = Screen.height;
 	/*	PlayerPrefs.SetInt ("Player Color", 0);  // Testing Player is Red
-		PlayerPrefs.SetString ("Player Top", "RedClaimCross"); // Testing Card
-		PlayerPrefs.SetString ("Player Mid", "RedMirrorStraight"); // Testing Card
+		PlayerPrefs.SetString ("Player Top", "RedClaimCenter"); // Testing Card
+		PlayerPrefs.SetString ("Player Mid", "RedBlockDiagonalCenter"); // Testing Card
 		PlayerPrefs.SetString ("Player Low", "RedBlockDiagonalSide"); // Testing Card */
 		PlayerPrefs.SetString ("Opponent Top", "BlueClaimCorner"); // Testing Card
 		PlayerPrefs.SetString ("Opponent Mid", "BlueMirrorStraight"); // Testing Card
@@ -53,7 +57,7 @@ public class GameManagerPlay : MonoBehaviour {
 			PlayerPrefs.SetInt ("Opponent Color", 0);
 		//	isOpponentTurn = false;
 		}
-		nextTurn ();
+		SpawnButton ();
 	}
 	
 	// Update is called once per frame
@@ -246,10 +250,14 @@ public class GameManagerPlay : MonoBehaviour {
 		GameObject[] finder;
 		if (PlayerPrefs.GetInt ("Player Color") == 0) {
 			finder = prefabulousRed;
+			PlayerPrefs.SetString ("Players Color", "Red");
+			PlayerPrefs.SetString ("Opponents Color", "Blue");
 		} 
 		else 
 		{
 			finder = prefabulousBlue;
+			PlayerPrefs.SetString ("Players Color", "Blue");
+			PlayerPrefs.SetString ("Opponents Color", "Red");
 		}
 		for (int x = 0; x < 15; x++) // Finds and sets the Top Element
 		{
@@ -313,7 +321,60 @@ public class GameManagerPlay : MonoBehaviour {
 			player2Card3.transform.Rotate (0.0f, 0.0f, -90.0f);
 	}
 
-	private void nextTurn() // Activates the next turn
+	private void SpawnButton()
+	{
+		player1Card1.GetComponent<Animator>().SetInteger("animation", 0);
+		player1Card2.GetComponent<Animator>().SetInteger("animation", 0);
+		player1Card3.GetComponent<Animator>().SetInteger("animation", 0);
+		player2Card1.GetComponent<Animator>().SetInteger("animation", 0);
+		player2Card2.GetComponent<Animator>().SetInteger("animation", 0);
+		player2Card3.GetComponent<Animator>().SetInteger("animation", 0);
+		if (isPlayerTurn == false) // The next turn will be the player's turn
+		{
+			if (PlayerPrefs.GetInt ("Player Color") == 0)
+			{
+				StartCoroutine (WaitThenSpawn ("red"));
+			}
+			else
+			{
+				StartCoroutine (WaitThenSpawn ("blue"));
+			}
+		}
+		else // The next turn will be the opponent's turn
+		{
+			if (PlayerPrefs.GetInt ("Opponent Color") == 0)
+			{
+				StartCoroutine (WaitThenSpawn ("red"));
+			}
+			else
+			{
+				StartCoroutine (WaitThenSpawn ("blue"));
+			}
+		}
+	}
+
+	IEnumerator WaitThenSpawn(string n)
+	{
+		yield return new WaitForSeconds (0.5f);
+		if (n == "red") 
+		{
+			redButtonController = (Instantiate (redStartButton, new Vector3 (0.0f, -6.0f, 10.0f), Quaternion.identity)) as GameObject;
+			redButtonController.transform.localScale = new Vector3(0.8f, 0.8f, 1.0f);
+		} 
+		else 
+		{
+			blueButtonController = (Instantiate (blueStartButton, new Vector3 (0.0f, -6.0f, 10.0f), Quaternion.identity)) as GameObject;
+			blueButtonController.transform.localScale = new Vector3(0.8f, 0.8f, 1.0f);
+		}
+	}
+		
+
+	public void ProceedToNextTurn()
+	{
+		StartCoroutine (nextTurn ());
+	}
+
+	IEnumerator nextTurn() // Activates the next turn
 	{
 		isPlayerTurn = !isPlayerTurn; // Switches turns
 		bool validSpace = false; // No space is valid by default
@@ -331,6 +392,8 @@ public class GameManagerPlay : MonoBehaviour {
 		if (isPlayerTurn) // If it is the player's turn
 		{ 
 			availability = player1Card1.GetComponent<Attribute> ().callCode (player1Card1, boardSpaces, PlayerPrefs.GetInt("Player Color")); // Availability is equal to the available spaces
+			player1Card1.GetComponent<Animator>().SetInteger("animation", 1);
+			yield return new WaitForSeconds (0.5f);
 			for (int x = 0; x < 9; x++) {
 				if (availability [x] && !boardSpaces[x].GetComponent<Spaces>().GetIsTaken()) 
 				{
@@ -344,9 +407,15 @@ public class GameManagerPlay : MonoBehaviour {
 			}
 			if (validSpace) {
 				SetPlayerPassed (false);
-				return;
-			} 
+				player1Card1.GetComponent<Animator>().SetInteger("animation", 3);
+				yield break;
+			}
+			player1Card1.GetComponent<Animator>().SetInteger("animation", 2);
+			yield return new WaitForSeconds (0.5f);
+			player1Card1.GetComponent<Animator>().SetInteger("animation", 0);
 			availability = player1Card2.GetComponent<Attribute> ().callCode (player1Card2, boardSpaces , PlayerPrefs.GetInt("Player Color"));
+			player1Card2.GetComponent<Animator>().SetInteger("animation", 1);
+			yield return new WaitForSeconds (0.5f);
 			for (int x = 0; x < 9; x++) {
 				if (availability [x] && !boardSpaces[x].GetComponent<Spaces>().GetIsTaken()) 
 				{
@@ -360,9 +429,15 @@ public class GameManagerPlay : MonoBehaviour {
 			}
 			if (validSpace) {
 				SetPlayerPassed (false);
-				return;
+				player1Card2.GetComponent<Animator>().SetInteger("animation", 3);
+				yield break;
 			}
+			player1Card2.GetComponent<Animator>().SetInteger("animation", 2);
+			yield return new WaitForSeconds (0.5f);
+			player1Card2.GetComponent<Animator>().SetInteger("animation", 0);
 			availability = player1Card3.GetComponent<Attribute> ().callCode (player1Card3, boardSpaces, PlayerPrefs.GetInt("Player Color"));
+			player1Card3.GetComponent<Animator>().SetInteger("animation", 1);
+			yield return new WaitForSeconds (0.5f);
 			for (int x = 0; x < 9; x++) {
 				if (availability [x] && !boardSpaces[x].GetComponent<Spaces>().GetIsTaken()) 
 				{
@@ -376,28 +451,34 @@ public class GameManagerPlay : MonoBehaviour {
 			}
 			if (validSpace) 
 			{
+				player1Card3.GetComponent<Animator>().SetInteger("animation", 3);
 				SetPlayerPassed (false);
-				return;
+				yield break;
 			} 
 			else 
 			{
+				player1Card3.GetComponent<Animator>().SetInteger("animation", 2);
+				yield return new WaitForSeconds (0.5f);
+				player1Card3.GetComponent<Animator>().SetInteger("animation", 0);
 			//	Debug.Log ("Player Has Passed!");
 				SetPlayerPassed (true); // The player has passed this turn
 				if (GetPlayerPassed () && GetOpponentPassed ()) // If both players have passed
 				{
 					SuddenDeath (); // The next player can go anywhere
-					return; // Leave this method
+					yield break; // Leave this method
 				} 
 				else // If only one player has passed
 				{
-					nextTurn (); // Then go to the next turn
-					return; // Leave this method
+					SpawnButton (); // Then go to the next turn
+					yield break; // Leave this method
 				}
 			}
 		} 
 		else 
 		{
 			availability = player2Card1.GetComponent<Attribute> ().callCode (player2Card1, boardSpaces, PlayerPrefs.GetInt("Opponent Color"));
+			player2Card1.GetComponent<Animator>().SetInteger("animation", 1);
+			yield return new WaitForSeconds (0.5f);
 			for (int x = 0; x < 9; x++) 
 			{
 				if (availability [x] && !boardSpaces[x].GetComponent<Spaces>().GetIsTaken()) 
@@ -412,10 +493,16 @@ public class GameManagerPlay : MonoBehaviour {
 			}
 			if (validSpace) 
 			{
-				SetPlayerPassed (false);
-				return;
-			} 
+				player2Card1.GetComponent<Animator>().SetInteger("animation", 3);
+				SetOpponentPassed (false);
+				yield break;
+			}
+			player2Card1.GetComponent<Animator>().SetInteger("animation", 2);
+			yield return new WaitForSeconds (0.5f);
+			player2Card1.GetComponent<Animator>().SetInteger("animation", 0);
 			availability = player2Card2.GetComponent<Attribute> ().callCode (player2Card2, boardSpaces, PlayerPrefs.GetInt("Opponent Color"));
+			player2Card2.GetComponent<Animator>().SetInteger("animation", 1);
+			yield return new WaitForSeconds (0.5f);
 			for (int x = 0; x < 9; x++) 
 			{
 				if (availability [x] && !boardSpaces[x].GetComponent<Spaces>().GetIsTaken()) 
@@ -429,10 +516,16 @@ public class GameManagerPlay : MonoBehaviour {
 				}
 			}
 			if (validSpace) {
+				player2Card2.GetComponent<Animator>().SetInteger("animation", 3);
 				SetPlayerPassed (false);
-				return;
+				yield break;
 			}
+			player2Card2.GetComponent<Animator>().SetInteger("animation", 2);
+			yield return new WaitForSeconds (0.5f);
+			player2Card2.GetComponent<Animator>().SetInteger("animation", 0);
 			availability = player2Card3.GetComponent<Attribute> ().callCode (player2Card3, boardSpaces, PlayerPrefs.GetInt("Opponent Color"));
+			player2Card3.GetComponent<Animator>().SetInteger("animation", 1);
+			yield return new WaitForSeconds (0.5f);
 			for (int x = 0; x < 9; x++) 
 			{
 				if (availability [x] && !boardSpaces[x].GetComponent<Spaces>().GetIsTaken()) 
@@ -447,22 +540,26 @@ public class GameManagerPlay : MonoBehaviour {
 			}
 			if (validSpace) 
 			{
+				player2Card3.GetComponent<Animator>().SetInteger("animation", 3);
 				SetOpponentPassed (false);
-				return;
+				yield break;
 			} 
 			else 
 			{
+				player2Card3.GetComponent<Animator>().SetInteger("animation", 2);
+				yield return new WaitForSeconds (0.5f);
+				player2Card3.GetComponent<Animator>().SetInteger("animation", 0);
 				SetOpponentPassed (true);
 			//	Debug.Log ("Opponent Passed!");
 				if (GetPlayerPassed () && GetOpponentPassed ()) 
 				{
 					SuddenDeath ();
-					return;
+					yield break;
 				} 
 				else 
 				{
-					nextTurn ();
-					return;
+					SpawnButton ();
+					yield break;
 				}
 			}
 		}
@@ -471,12 +568,87 @@ public class GameManagerPlay : MonoBehaviour {
 
 	public void turnDone()
 	{
+		player1Card1.GetComponent<Animator>().SetInteger("animation", 0);
+		player1Card2.GetComponent<Animator>().SetInteger("animation", 0);
+		player1Card3.GetComponent<Animator>().SetInteger("animation", 0);
 		SetPlayerPassed (false);
 		SetOpponentPassed (false);
 		for (int x = 0; x < 9; x++) {
 			boardSpaces [x].GetComponent<Spaces> ().SetIsAvailable (false);
 		}
-		nextTurn();
+		if (CheckForWin ()) 
+		{
+			if (GetIsPlayerTurn ()) {
+				Debug.Log (PlayerPrefs.GetString ("Players Color") + " Player Wins!");
+			} 
+			else 
+			{
+				Debug.Log (PlayerPrefs.GetString ("Opponents Color") + " Player Wins!");
+			}
+				return;
+		}
+		SpawnButton ();
+	}
+
+	private bool CheckForWin()
+	{
+		int currentPlayerColor;
+		if (GetIsPlayerTurn ()) 
+		{
+			currentPlayerColor = PlayerPrefs.GetInt ("Player Color");
+		} 
+		else 
+		{	
+			currentPlayerColor = PlayerPrefs.GetInt ("Opponent Color");
+		}
+		if (boardSpaces [0].GetComponent<Spaces> ().GetWhoHasIt () == currentPlayerColor)  // Checks for winning combinations based on upper left corner square
+		{
+			if (boardSpaces [1].GetComponent<Spaces> ().GetWhoHasIt () == currentPlayerColor && boardSpaces [2].GetComponent<Spaces> ().GetWhoHasIt () == currentPlayerColor) // Top Row
+			{ 
+				return true;
+			}
+			if (boardSpaces [3].GetComponent<Spaces> ().GetWhoHasIt () == currentPlayerColor && boardSpaces [6].GetComponent<Spaces> ().GetWhoHasIt () == currentPlayerColor) // Left Column
+			{
+				return true;
+			}
+			if (boardSpaces [4].GetComponent<Spaces> ().GetWhoHasIt () == currentPlayerColor && boardSpaces [8].GetComponent<Spaces> ().GetWhoHasIt () == currentPlayerColor) // Diagonal Upper Left to Lower Right
+			{
+				return true;
+			}
+		}
+		if (boardSpaces [1].GetComponent<Spaces> ().GetWhoHasIt () == currentPlayerColor) // Checks for winning combinations based on the upper square
+		{
+			if (boardSpaces [4].GetComponent<Spaces> ().GetWhoHasIt () == currentPlayerColor && boardSpaces [7].GetComponent<Spaces> ().GetWhoHasIt () == currentPlayerColor) // Middle Column
+			{
+				return true;
+			}
+		}
+		if (boardSpaces [2].GetComponent<Spaces> ().GetWhoHasIt () == currentPlayerColor) // Checks for winning combinations based on the upper right corner square
+		{
+			if (boardSpaces [4].GetComponent<Spaces> ().GetWhoHasIt () == currentPlayerColor && boardSpaces [6].GetComponent<Spaces> ().GetWhoHasIt () == currentPlayerColor) // Diagonal Upper Right to Lower Left
+			{
+				return true;
+			}
+			if (boardSpaces [5].GetComponent<Spaces> ().GetWhoHasIt () == currentPlayerColor && boardSpaces [8].GetComponent<Spaces> ().GetWhoHasIt () == currentPlayerColor) // Right Column
+			{
+				return true;
+			}
+		}
+		if (boardSpaces [3].GetComponent<Spaces> ().GetWhoHasIt () == currentPlayerColor) // Checks for winning combinations based on left square
+		{
+			if (boardSpaces [4].GetComponent<Spaces> ().GetWhoHasIt () == currentPlayerColor && boardSpaces [5].GetComponent<Spaces> ().GetWhoHasIt () == currentPlayerColor) // Middle Row
+			{
+				return true;
+			}
+		}
+		if (boardSpaces [6].GetComponent<Spaces> ().GetWhoHasIt () == currentPlayerColor)
+		{
+			if (boardSpaces [7].GetComponent<Spaces> ().GetWhoHasIt () == currentPlayerColor && boardSpaces [8].GetComponent<Spaces> ().GetWhoHasIt () == currentPlayerColor) // Bottom Row
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
 
