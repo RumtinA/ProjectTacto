@@ -8,11 +8,9 @@ public class Cards : MonoBehaviour {
 	public string type; // Whether the card is Claim, Block, Mirror, Complete
 	public int color;  // 0 is red, 1 is blue
 	private bool isStored; // Checks if the card is stored in any of the three slots
-	private string nameInGame;
 
 	void Start ()
 	{
-		nameInGame = gameObject.name;
 		isStored = false;
 	}
 		

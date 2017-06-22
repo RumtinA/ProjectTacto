@@ -17,11 +17,12 @@ public class GameManagerPlay : MonoBehaviour {
 	private GameObject player2Card1;
 	private GameObject player2Card2;
 	private GameObject player2Card3;
+	private bool hasResolutionChanged;
 	private bool isPlayerTurn;
 //	private bool isOpponentTurn;
 	private bool playerPassed;
 	private bool opponentPassed;
-	private bool duringSuddenDeath;
+//	private bool duringSuddenDeath;
 	private float currentResolutionWidth;
 	private float currentResolutionHeight;
 	public GameObject redStartButton;
@@ -32,15 +33,21 @@ public class GameManagerPlay : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		hasResolutionChanged = false;
 		currentResolutionWidth = Screen.width;
 		currentResolutionWidth = Screen.height;
-	/*	PlayerPrefs.SetInt ("Player Color", 0);  // Testing Player is Red
-		PlayerPrefs.SetString ("Player Top", "RedClaimCenter"); // Testing Card
-		PlayerPrefs.SetString ("Player Mid", "RedBlockDiagonalCenter"); // Testing Card
-		PlayerPrefs.SetString ("Player Low", "RedBlockDiagonalSide"); // Testing Card */
-		PlayerPrefs.SetString ("Opponent Top", "BlueClaimCorner"); // Testing Card
-		PlayerPrefs.SetString ("Opponent Mid", "BlueMirrorStraight"); // Testing Card
-		PlayerPrefs.SetString ("Opponent Low", "BlueBlockDiagonalSide"); // Testing Card 
+		if (PlayerPrefs.GetInt ("Player Color") == 0) 
+		{
+			PlayerPrefs.SetString ("Opponent Top", "RedClaimCenter"); // Testing Card
+			PlayerPrefs.SetString ("Opponent Mid", "RedBlockDiagonalCenter"); // Testing Card
+			PlayerPrefs.SetString ("Opponent Low", "RedBlockDiagonalSide"); // Testing Card
+		} 
+		else 
+		{
+			PlayerPrefs.SetString ("Opponent Top", "BlueMirrorCorner"); // Testing Card
+			PlayerPrefs.SetString ("Opponent Mid", "BlueClaimCross"); // Testing Card
+			PlayerPrefs.SetString ("Opponent Low", "BlueBlockRowCenter"); // Testing Card
+		}
 		playerCode = new GameObject[3];
 		opponentCode = new GameObject[3];
 		setCode ();
@@ -71,6 +78,11 @@ public class GameManagerPlay : MonoBehaviour {
 
 	private void changeResolution()
 	{
+		if (!hasResolutionChanged) 
+		{
+			hasResolutionChanged = true;
+			return;
+		}
 		currentResolutionWidth = Screen.width;
 		currentResolutionHeight = Screen.height;
 		if (currentResolutionWidth/currentResolutionHeight > 1.7f) // 16:9
@@ -230,6 +242,7 @@ public class GameManagerPlay : MonoBehaviour {
 			boardSpaces [7].transform.localScale = new Vector3 (0.3f, 0.3f, 1.0f);
 			boardSpaces [8].transform.position = new Vector3 (2.75f,- 3.92f, 2);
 			boardSpaces [8].transform.localScale = new Vector3 (0.3f, 0.3f, 1.0f);
+
 			player1Card1.transform.position = new Vector3 (-6.5f, 3.92f, 2);
 			player1Card2.transform.position = new Vector3 (-6.5f, 0.0f, 2);
 			player1Card3.transform.position = new Vector3 (-6.5f, -3.92f, 2);
@@ -263,18 +276,21 @@ public class GameManagerPlay : MonoBehaviour {
 		{
 			if (PlayerPrefs.GetString ("Player Top") == finder [x].name) {
 				playerCode [0] = finder [x];
+				Debug.Log (finder [x].GetComponent<Cards> ().GetNameOfCard ());
 			}
 		}
 		for (int x = 0; x < 15; x++) // Finds and sets the Top Element
 		{
 			if (PlayerPrefs.GetString ("Player Mid") == finder [x].name) {
 				playerCode [1] = finder [x];
+				Debug.Log (finder [x].GetComponent<Cards> ().GetNameOfCard ());
 			}
 		}
 		for (int x = 0; x < 15; x++) // Finds and sets the Top Element
 		{
 			if (PlayerPrefs.GetString ("Player Low") == finder [x].name) {
 				playerCode [2] = finder [x];
+				Debug.Log (finder [x].GetComponent<Cards> ().GetNameOfCard ());
 			}
 		}
 
@@ -676,7 +692,7 @@ public class GameManagerPlay : MonoBehaviour {
 	{
 		isPlayerTurn = !isPlayerTurn;
 		bool isValid = false;
-		duringSuddenDeath = true;
+//		duringSuddenDeath = true;
 		for (int x = 0; x < 9; x++) 
 		{
 			if (!boardSpaces[x].GetComponent<Spaces>().GetIsTaken())

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Spaces : MonoBehaviour {
 
-    public string name; //Name of Space
+    public string nameofSpace; //Name of Space
     public string type; //Type of Space (Center, Corner, Cross)
 	private int whoHasIt;
     public int BoardPosition; //Position of space in relation to board, position numbers are 1-9

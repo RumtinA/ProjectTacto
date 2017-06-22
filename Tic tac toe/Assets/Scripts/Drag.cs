@@ -9,16 +9,16 @@ public class Drag : MonoBehaviour {
 	private Vector3 offset;
 	private Animator animator; // Grabs the animator
 	private BoxCollider2D col;
-	private bool isSelected;
+//	private bool isSelected;
 	private bool isDragging;
 	private bool singleClick;
-	private bool isStored;
+//	private bool isStored;
 	private string storedIn;
 	private Collider2D colliding;
 	private bool rotated;
 	private Cards thisCard;
 	private Vector3 startPosition; // The starting position of the card
-	private Vector3 startOffScreen;
+//	private Vector3 startOffScreen;
 	private GameObject storedMat;
 
 	void Start()
@@ -26,12 +26,12 @@ public class Drag : MonoBehaviour {
 		offset = new Vector3 (0, 0, 0);
 		col = GetComponent<BoxCollider2D>();
 		animator = GetComponent<Animator>();
-		isSelected = false;
+//		isSelected = false;
 		isDragging = false;
 		singleClick = false;
 		rotated = false;
 		thisCard = gameObject.GetComponent<Cards> ();
-		startOffScreen = gameObject.transform.position;
+//		startOffScreen = gameObject.transform.position;
 		startPosition = gameObject.transform.position;
 		startPosition.x = gameObject.transform.position.x - 245.0f;
 	//	Debug.Log (startPosition);
@@ -66,13 +66,13 @@ public class Drag : MonoBehaviour {
 
 
 
-		isSelected = true; // Becomes true because selected
+//		isSelected = true; // Becomes true because selected
 		animator.SetBool ("isSelected", true); // Tells animator that the item is selected
 	}
 
 	void OnMouseUp()
 	{
-		isSelected = false; // No longer selected
+//		isSelected = false; // No longer selected
 		Cursor.visible = true;
 		animator.SetBool ("isSelected", false); // Tells animator that the item is no longer selected
 		// colliding.GetComponent<ProgramMat>().chooseOrRemoveCard(false, null);
@@ -93,12 +93,12 @@ public class Drag : MonoBehaviour {
 			thisCard.SetIsStored (true);
 			colliding.GetComponent<ProgramMat> ().chooseOrRemoveCard (true, gameObject);
 			colliding.GetComponent<ProgramMat> ().SetOccupiedCard (gameObject.GetComponent<Cards> ().GetNameOfCard ());
-			isStored = true;
+//			isStored = true;
 			storedIn = colliding.gameObject.GetComponent<ProgramMat> ().matName;
 			storedMat = colliding.gameObject;
 		} else {
 			gameObject.transform.position = GetStartPosition ();
-			isStored = false;
+//			isStored = false;
 			if (storedIn != "none") {
 				storedMat.GetComponent<ProgramMat> ().SetIsTaken (false);
 				storedIn = "none";

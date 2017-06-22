@@ -4,15 +4,23 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 
-public class Player : MonoBehaviour {
+public class Player : NetworkBehaviour {
 
 	public string playerName = "";
 	public bool isHost;
-	public InputField nameInput;
 
 	void Start()
 	{
-		nameInput = GetComponent<InputField> ();
-		nameInput.interactable = true;
+		playerName = PlayerPrefs.GetString ("Name");
+	}
+
+	public override void OnStartServer()
+	{
+		isHost = true;
+	}
+
+	public override void OnStartClient()
+	{
+		
 	}
 }

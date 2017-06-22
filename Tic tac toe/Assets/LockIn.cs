@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LockIn : MonoBehaviour {
 
-	public GameObject manager;
+
 
 	void Start()
 	{
@@ -13,6 +13,6 @@ public class LockIn : MonoBehaviour {
 
 	void OnMouseUp()
 	{
-		manager.GetComponent<SceneManage>().GameTime ();
+		SceneManagement.Instance.SwitchScene ("Gameplay");
 	}
 }

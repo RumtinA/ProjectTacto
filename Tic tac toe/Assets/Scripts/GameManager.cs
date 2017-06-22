@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour {
 	public GameObject button;
 	public GameObject background;
 	private bool lockInVisible;
-	private bool lockedIn;
+//	private bool lockedIn;
 	private GameObject theButton;
 
 	// Use this for initialization
@@ -32,9 +32,19 @@ public class GameManager : MonoBehaviour {
 	void Start ()
 	{
 		lockInVisible = false;
-		lockedIn = false;
+//		lockedIn = false;
 		SetPlayerColor (1);  // Default sets player to red
-		SetEnemyColor (0); // Default sets enemy to blue
+		PlayerPrefs.SetInt("Player Color", GetPlayerColor());
+		if (GetPlayerColor() == 0) 
+		{
+			SetEnemyColor (1); // Default sets enemy to blue
+			PlayerPrefs.SetInt ("Opponent Color", 1);
+		} 
+		else 
+		{
+			SetEnemyColor (0);
+			PlayerPrefs.SetInt ("Opponent Color", 0);
+		}
 		if (GetPlayerColor () == 0) 		
 		{
 			background.transform.rotation = new Quaternion (0.0f, 0.0f, 180.0f, 0.0f);
