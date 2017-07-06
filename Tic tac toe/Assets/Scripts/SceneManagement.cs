@@ -22,6 +22,8 @@ public class SceneManagement : MonoBehaviour {
 
 	public void SwitchScene(string sceneName)
 	{
+		if (sceneName.Equals("MainMenu"))
+			GameObject.Destroy(GameObject.Find("Network Manager"));
 		SceneManager.LoadScene (sceneName);
 	}
 

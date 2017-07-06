@@ -11,6 +11,11 @@ public class GameManagerPlay : MonoBehaviour {
 	public GameObject[] prefabulousRed; // Red card prefabs
 	public GameObject[] prefabulousBlue; // Blue card prefabs
 	public GameObject background;
+    public GameObject redTurnPrefab;
+    public GameObject blueTurnPrefab;
+    public GameObject catsGamePrefab;
+    public GameObject redWinsPrefab;
+    public GameObject blueWinsPrefab;
 	private GameObject player1Card1;
 	private GameObject player1Card2;
 	private GameObject player1Card3;
@@ -38,15 +43,15 @@ public class GameManagerPlay : MonoBehaviour {
 		currentResolutionWidth = Screen.height;
 		if (PlayerPrefs.GetInt ("Player Color") == 0) 
 		{
-			PlayerPrefs.SetString ("Opponent Top", "RedClaimCenter"); // Testing Card
-			PlayerPrefs.SetString ("Opponent Mid", "RedBlockDiagonalCenter"); // Testing Card
-			PlayerPrefs.SetString ("Opponent Low", "RedBlockDiagonalSide"); // Testing Card
+			PlayerPrefs.SetString ("Opponent Top", "BlueClaimCenter"); // Testing Card
+			PlayerPrefs.SetString ("Opponent Mid", "BlueBlockDiagonalCenter"); // Testing Card
+			PlayerPrefs.SetString ("Opponent Low", "BlueBlockDiagonalSide"); // Testing Card
 		} 
 		else 
 		{
-			PlayerPrefs.SetString ("Opponent Top", "BlueMirrorCorner"); // Testing Card
-			PlayerPrefs.SetString ("Opponent Mid", "BlueClaimCross"); // Testing Card
-			PlayerPrefs.SetString ("Opponent Low", "BlueBlockRowCenter"); // Testing Card
+			PlayerPrefs.SetString ("Opponent Top", "RedMirrorCorner"); // Testing Card
+			PlayerPrefs.SetString ("Opponent Mid", "RedClaimCross"); // Testing Card
+			PlayerPrefs.SetString ("Opponent Low", "RedBlockRowCenter"); // Testing Card
 		}
 		playerCode = new GameObject[3];
 		opponentCode = new GameObject[3];
@@ -398,12 +403,23 @@ public class GameManagerPlay : MonoBehaviour {
 		if (isPlayerTurn && PlayerPrefs.GetInt ("Player Color") == 0 || !isPlayerTurn && PlayerPrefs.GetInt("Player Color") != 0) {
 			carduno.Replace ("Red", "");  // If the player is active player is red, remove red from string
 			Debug.Log("Red's turn!");
-		} 
-		else
+            GameObject RedTurn;
+            transform.position = new Vector3(0, 0, 0); //Sets position
+            RedTurn = Instantiate(redTurnPrefab, transform.position, Quaternion.identity) as GameObject; //Spawns object
+            RedTurn.transform.SetParent(GameObject.FindGameObjectWithTag("Canvas").transform, false); //Attempts to include object in Canvas
+            Destroy(RedTurn, 1.0f);
+
+        }
+        else
 		{
 			carduno.Replace ("Blue", ""); // Else, remove blue from string
 			Debug.Log("Blue's turn!");
-		}
+            GameObject BlueTurn;
+            transform.position = new Vector3(0, 0, 0); //Sets position
+            BlueTurn = Instantiate(blueTurnPrefab, transform.position, Quaternion.identity) as GameObject; //Spawns object
+            BlueTurn.transform.SetParent(GameObject.FindGameObjectWithTag("Canvas").transform, false); //Attempts to include object in Canvas
+            Destroy(BlueTurn, 1.0f);
+        }
 		bool[] availability = new bool[9]; // Checks to see if spaces are available
 		if (isPlayerTurn) // If it is the player's turn
 		{ 
@@ -596,11 +612,46 @@ public class GameManagerPlay : MonoBehaviour {
 		{
 			if (GetIsPlayerTurn ()) {
 				Debug.Log (PlayerPrefs.GetString ("Players Color") + " Player Wins!");
+                if (PlayerPrefs.GetInt ("Players Color") == 0)
+                {
+                    GameObject BlueWins;
+                    transform.position = new Vector3(0, 0, 0); //Sets position
+                    BlueWins = Instantiate(blueWinsPrefab, transform.position, Quaternion.identity) as GameObject; //Spawns Object
+                    BlueWins.transform.SetParent(GameObject.FindGameObjectWithTag("Canvas").transform, false); //Attempts to include object in Canvas
+                    Destroy(BlueWins, 5.0f); //Destroys the object after some time
+
+                }
+                else
+                {
+                    GameObject RedWins;
+                    transform.position = new Vector3(0, 0, 0); //Sets position
+                    RedWins = Instantiate(redWinsPrefab, transform.position, Quaternion.identity) as GameObject; //Spawns Object
+                    RedWins.transform.SetParent(GameObject.FindGameObjectWithTag("Canvas").transform, false); //Attempts to include object in Canvas
+                    Destroy(RedWins, 5.0f); //Destroys the object after some time
+                }
+
 			} 
 			else 
 			{
 				Debug.Log (PlayerPrefs.GetString ("Opponents Color") + " Player Wins!");
-			}
+                if (PlayerPrefs.GetInt("Opponents Color") == 0)
+                {
+                    GameObject BlueWins;
+                    transform.position = new Vector3(0, 0, 0); //Sets position
+                    BlueWins = Instantiate(blueWinsPrefab, transform.position, Quaternion.identity) as GameObject; //Spawns Object
+                    BlueWins.transform.SetParent(GameObject.FindGameObjectWithTag("Canvas").transform, false); //Attempts to include object in Canvas
+                    Destroy(BlueWins, 5.0f); //Destroys the object after some time
+
+                }
+                else
+                {
+                    GameObject RedWins;
+                    transform.position = new Vector3(0, 0, 0); //Sets position
+                    RedWins = Instantiate(redWinsPrefab, transform.position, Quaternion.identity) as GameObject; //Spawns Object
+                    RedWins.transform.SetParent(GameObject.FindGameObjectWithTag("Canvas").transform, false); //Attempts to include object in Canvas
+                    Destroy(RedWins, 5.0f); //Destroys the object after some time
+                }
+            }
 				return;
 		}
 		SpawnButton ();
@@ -704,7 +755,12 @@ public class GameManagerPlay : MonoBehaviour {
 		if (!isValid) 
 		{
 			Debug.Log ("Cat's game!");
-		}
+            GameObject catsGame;
+            transform.position = new Vector3(0, 0, 0); //Sets position
+            catsGame = Instantiate(catsGamePrefab, transform.position, Quaternion.identity) as GameObject; //Spawns Object
+            catsGame.transform.SetParent(GameObject.FindGameObjectWithTag("Canvas").transform, false); //Attempts to include object in Canvas
+            Destroy(catsGame, 1.0f);
+        }
 	}
 
 	public bool GetIsPlayerTurn()
