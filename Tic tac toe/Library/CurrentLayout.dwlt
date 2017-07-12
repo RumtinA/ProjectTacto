@@ -40,8 +40,8 @@ MonoBehaviour:
     y: 0
     width: 305
     height: 771
-  m_MinSize: {x: 275, y: 50}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 277, y: 71}
+  m_MaxSize: {x: 4002, y: 4021}
   m_ActualView: {fileID: 12}
   m_Panes:
   - {fileID: 12}
@@ -134,7 +134,7 @@ MonoBehaviour:
   m_MinSize: {x: 683, y: 492}
   m_MaxSize: {x: 14004, y: 14042}
   vertical: 0
-  controlID: 11
+  controlID: 47
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -158,7 +158,7 @@ MonoBehaviour:
   m_MinSize: {x: 406, y: 492}
   m_MaxSize: {x: 10002, y: 14042}
   vertical: 1
-  controlID: 12
+  controlID: 48
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -182,7 +182,7 @@ MonoBehaviour:
   m_MinSize: {x: 406, y: 221}
   m_MaxSize: {x: 8006, y: 4021}
   vertical: 0
-  controlID: 13
+  controlID: 49
 --- !u!114 &9
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -290,7 +290,7 @@ MonoBehaviour:
     y: 92
     width: 303
     height: 750
-  m_ScrollPosition: {x: 0, y: 0}
+  m_ScrollPosition: {x: 0, y: 262.95508}
   m_InspectorMode: 0
   m_PreviewResizer:
     m_CachedPref: 100
@@ -519,9 +519,9 @@ MonoBehaviour:
     height: 446
   m_TreeViewState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 822c0000
-    m_LastClickedID: 11394
-    m_ExpandedIDs: b857ffffce57ffffe457ffff0659ffff78dbffff8edbffffbafbffffcefbffffe2fbffffe4fbffff00000000642c0000
+    m_SelectedIDs: 02280000
+    m_LastClickedID: 0
+    m_ExpandedIDs: e6f5fffffaf5ffff0ef6ffff10f6ffffa2f6ffff28f7ffffaef7ffff34f8ffffd6fbfffff4ffffff0000000002340000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -605,9 +605,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 18.39383
+    m_Target: 17.848284
     speed: 2
-    m_Value: 18.39383
+    m_Value: 17.848284
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -668,7 +668,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 1920
     y: 689
-    width: 1482
+    width: 1537
     height: 369
   m_ViewPositions:
     m_KeySerializationHelper:
@@ -742,7 +742,7 @@ MonoBehaviour:
     - {x: 635.2, y: 376.19995}
     - {x: 635.2, y: 397.19995}
     - {x: 635.2, y: 397.19995}
-    - {x: 841.2, y: 201.40001}
+    - {x: 874.2, y: 201.40001}
     - {x: 839.2, y: 201.40001}
     - {x: 839.2, y: 201.40001}
   m_PreviewAnimator: {fileID: 0}
@@ -800,19 +800,19 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 0
     m_Folders:
-    - Assets/Prefabs/Text
+    - Assets/Prefabs/Buttons
   m_ViewMode: 1
   m_StartGridSize: 96
   m_LastFolders:
-  - Assets/Prefabs/Text
+  - Assets/Prefabs/Buttons
   m_LastFoldersGridSize: 96
   m_LastProjectPath: C:\Users\Orlando\Documents\Tic tac toe
   m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 154}
-    m_SelectedIDs: f0270000
-    m_LastClickedID: 10224
-    m_ExpandedIDs: 0000000000250000a0260000e626000062270000922700003e2800007c2800002e2900004c2900007e290000ea290000ec2900002a2b000000ca9a3bffffff7f
+    scrollPos: {x: 0, y: 118}
+    m_SelectedIDs: 76260000
+    m_LastClickedID: 9846
+    m_ExpandedIDs: 0000000054250000a6260000dc260000422700006e270000f227000028280000ac280000c4280000ee2800003229000034290000062a000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -840,7 +840,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 4}
     m_SelectedIDs: 26260000
     m_LastClickedID: 9766
-    m_ExpandedIDs: 0000000000250000a0260000e626000062270000922700003e2800007c2800002e2900004c2900007e290000ea290000ec2900002a2b0000
+    m_ExpandedIDs: 0000000054250000a6260000dc260000422700006e270000f227000028280000ac280000c4280000ee2800003229000034290000062a0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -867,8 +867,8 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 0
-    m_ExpandedInstanceIDs: c6230000f6380000342600001870ffffba280000
+    m_HadKeyboardFocusLastEvent: 1
+    m_ExpandedInstanceIDs: c6230000f6380000342600001870ffffba280000562600004a270000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -892,7 +892,7 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
     m_NewAssetIndexInList: -1
-    m_ScrollPosition: {x: 0, y: 0}
+    m_ScrollPosition: {x: 0, y: 25}
     m_GridSize: 96
   m_DirectoriesAreaWidth: 272
 --- !u!114 &20

@@ -7,13 +7,15 @@ public class MenuManager : MonoBehaviour {
 
 	private bool animStarted, musicOptions, soundFXOptions;
 	public Canvas canvas;
-	public GameObject play, options, credits, vsComputer, vsPlayer, tutorial, backButton, creditsText, host, join, enterName, confirmName, musicButton, soundFxButton, optionsText;	
+	public GameObject play, options, credits, vsComputer, vsPlayer, tutorial, backButton, creditsText, host, join, enterName, confirmName, musicButton, soundFxButton, optionsText, hostLeftText;
 	private GameObject[] buttonsToSpawn;
 	private GameObject[] spawnedButtons;
 	private string menuTracker;
 
 	void Start()
 	{
+		if (PlayerPrefs.GetInt ("Kicked") == 1)
+			DoTheRevealAndDestoyHostLeft ();
 		animStarted = false; // No animation is playing
 		if (PlayerPrefs.GetInt ("Music Options") == 1) // If music was not muted previously
 		{
@@ -36,6 +38,8 @@ public class MenuManager : MonoBehaviour {
 			AudioManager.audioInstance.audioSourceFX.mute = true; // Muted
 		}
 		menuTracker = "Main Menu";
+
+        
 	}
 
 	public bool SetMusicOptions(Button theButton) // Enables or disables music
@@ -70,6 +74,19 @@ public class MenuManager : MonoBehaviour {
 		return soundFXOptions;
 	}
 
+	public void DoTheRevealAndDestoyHostLeft()
+	{
+		StartCoroutine (RevealAndDestroyHostLeft());
+	}
+
+	public IEnumerator RevealAndDestroyHostLeft()
+	{
+		hostLeftText.SetActive (true);
+		yield return new WaitForSeconds (3.0f);
+		hostLeftText.SetActive (false);
+		PlayerPrefs.SetInt ("Kicked", 0);
+	}
+
 
 // ******** BUTTON PRESSING SECTION ******** \\
 
@@ -81,6 +98,8 @@ public class MenuManager : MonoBehaviour {
 		animStarted = true; // Button has been selected
 		GameObject other1, other2; // Temp GameObjects used to remove the other remaining objects
 		selectedButton.interactable = false; // The button that was pressed is no longer interactable
+        
+
 
 		// CHECKS FOR BUTTON PRESSED ON MAIN MENU
 
@@ -93,6 +112,7 @@ public class MenuManager : MonoBehaviour {
 			buttonsToSpawn[1] = vsPlayer as GameObject; // The VS Player Button
 			buttonsToSpawn[2] = tutorial as GameObject; // The Tutorial Button
 			buttonsToSpawn[3] = backButton as GameObject; // A Back Button
+
 		}
 		else if (nameOfButton.Equals("Options Button")) // If the Options Button was pressed
 		{
@@ -126,6 +146,7 @@ public class MenuManager : MonoBehaviour {
 		animStarted = true; // Animation has started
 		GameObject other1 = null, other2 = null, other3 = null; // Possibility of three other objects on screen that need removal
 		selectedButton.interactable = false; // The selected button is no longer interactable
+        
 
 		// CHECKS FOR BUTTON PRESSED
 
@@ -205,7 +226,11 @@ public class MenuManager : MonoBehaviour {
 		{
 			PlayerPrefs.SetString ("Name", GameObject.Find("enterName(Clone)").GetComponent<InputField> ().textComponent.text); // Sets the player's name to what they've entered
 			if (PlayerPrefs.GetString ("Name") == null || PlayerPrefs.GetString ("Name") == "") // If the player's name is null or blank
+			{
+				selectedButton.interactable = true;
+				animStarted = false;
 				return; // Stop them from continuing
+			}
 			PlayerPrefs.SetString ("Opponent Name", ""); // Sets the opponent's name to blank
 			SceneManagement.Instance.SwitchScene ("Lobby"); // Go to the lobby scene
 			return;
@@ -227,7 +252,8 @@ public class MenuManager : MonoBehaviour {
 		// VS Player Menu
 		else if (nameOfButton.Equals("Host Button")) // If the Host button is selected
 		{
-			PlayerPrefs.SetString ("Multiplayer Role", "Host Local"); // Set the player's role to Host Local [MUST BE CHANGED ONCE IMPLEMENTING WIFI]
+			PlayerPrefs.SetString ("Multiplayer Role", "Host Local"); // Set the player's role to Host Local
+			PlayerPrefs.SetString ("Opponent Name", "");
 			other1 = GameObject.Find ("Back Button(Clone)"); // Other button was the Back button
 			other2 = GameObject.Find("Join Button(Clone)"); // Other button was the Join button
 			buttonsToSpawn = new GameObject[3]; // Going to spawn three objects
@@ -239,7 +265,8 @@ public class MenuManager : MonoBehaviour {
 		}
 		else if (nameOfButton.Equals("Join Button")) // If the Join button is selected
 		{
-			PlayerPrefs.SetString ("Multiplayer Role", "Guest Local"); // Set the player's role to Guest Local [MUST BE CHANGED ONCE IMPLEMENTING WIFI]
+			PlayerPrefs.SetString ("Multiplayer Role", "Guest Local"); // Set the player's role to Guest Local
+			PlayerPrefs.SetString ("Opponent Name", "");
 			other1 = GameObject.Find ("Back Button(Clone)"); // Other button was the Back button
 			other2 = GameObject.Find("Host Button(Clone)"); // Other button was the Host button
 			buttonsToSpawn = new GameObject[3]; // Going to spawn three objects
